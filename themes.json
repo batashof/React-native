@@ -1,0 +1,25 @@
+{
+  "themes": [
+    {
+      "name": "ACTUALITÉ"
+    },
+    {
+      "name": "PRESSE"
+    },
+    {
+      "name": "COMMUNICATION"
+    },
+    {
+      "name": "ÉDITION"
+    },
+    {
+      "name": "WEB"
+    },
+    {
+      "name": "SYSTÈMES D'INFORMATION"
+    },
+    {
+      "name": "FORMATION"
+    }
+  ]
+}
