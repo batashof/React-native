@@ -3,6 +3,7 @@ import Page2 from "./pages/Page2";
 import Page3 from "./pages/Page3";
 import SideMenu from "./components/SideMenu/SideMenu";
 import { DrawerNavigator } from "react-navigation";
+import React from "react";
 
 export default DrawerNavigator(
   {
@@ -17,7 +18,7 @@ export default DrawerNavigator(
     }
   },
   {
-    contentComponent: SideMenu,
+    contentComponent: props => <SideMenu {...props} />,
     drawerWidth: 300
   }
 );

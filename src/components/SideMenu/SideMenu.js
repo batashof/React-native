@@ -50,18 +50,25 @@ export default class SideMenu extends Component {
       );
     }
     const items = this.state.dataSource;
-      console.log(this.props.navigation.state);
+    // console.log(this.props.navigation.state);
     return (
       <Content>
         <List>
-          <ListItem onPress={this.navigateToScreen("HomePage")}>
+          <ListItem onPress={() => this.props.navigation.navigate("HomePage")}>
             <Text>Home</Text>
           </ListItem>
         </List>
         <List
           dataArray={items}
           renderRow={item => (
-            <ListItem onPress={() => this.props.navigation.navigate('HomePage', {theme: item.source.name }) } >
+            <ListItem
+              onPress={() => {
+               // this.props.navigation.closeDrawer();
+                this.props.navigation.navigate("Page2", {
+                  theme: item.source.name
+                });
+              }}
+            >
               <Text>{item.source.name}</Text>
             </ListItem>
           )}
