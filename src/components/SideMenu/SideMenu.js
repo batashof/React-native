@@ -1,8 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import styles from "./SideMenu.style";
-import { NavigationActions } from "react-navigation";
-//import { ScrollView, Text, View } from "react-native";
+import { DrawerActions } from "react-navigation";
+
 import { Content, List, ListItem, Text } from "native-base";
 import { ActivityIndicator, FlatList, View } from "react-native";
 
@@ -34,13 +33,6 @@ export default class SideMenu extends Component {
       });
   }
 
-  navigateToScreen = route => () => {
-    const navigateAction = NavigationActions.navigate({
-      routeName: route
-    });
-    this.props.navigation.dispatch(navigateAction);
-  };
-
   render() {
     if (this.state.isLoading) {
       return (
@@ -50,11 +42,17 @@ export default class SideMenu extends Component {
       );
     }
     const items = this.state.dataSource;
-    // console.log(this.props.navigation.state);
     return (
       <Content>
         <List>
-          <ListItem onPress={() => this.props.navigation.navigate("HomePage")}>
+          <ListItem
+            onPress={() => {
+              this.props.navigation.dispatch(DrawerActions.closeDrawer());
+              this.props.navigation.navigate("HomePage", {
+                theme: "Home"
+              });
+            }}
+          >
             <Text>Home</Text>
           </ListItem>
         </List>
@@ -63,8 +61,8 @@ export default class SideMenu extends Component {
           renderRow={item => (
             <ListItem
               onPress={() => {
-               // this.props.navigation.closeDrawer();
-                this.props.navigation.navigate("Page2", {
+                this.props.navigation.dispatch(DrawerActions.closeDrawer());
+                this.props.navigation.navigate("HomePage", {
                   theme: item.source.name
                 });
               }}
@@ -74,40 +72,6 @@ export default class SideMenu extends Component {
           )}
         />
       </Content>
-      /*   {/!*<View style={styles.container}>
-        <ScrollView>
-          <View>
-            <Text style={styles.sectionHeadingStyle}>Section 1</Text>
-            <View style={styles.navSectionStyle}>
-              <Text
-                style={styles.navItemStyle}
-                onPress={this.navigateToScreen("HomePage")}
-              >
-                Home
-              </Text>
-            </View>
-          </View>
-          <View>
-            <View style={styles.navSectionStyle}>
-              <Text
-                style={styles.navItemStyle}
-                onPress={this.navigateToScreen("Page2")}
-              >
-                Page2
-              </Text>
-              <Text
-                style={styles.navItemStyle}
-                onPress={this.navigateToScreen("Page3")}
-              >
-                Page3
-              </Text>
-            </View>
-          </View>
-        </ScrollView>
-        <View style={styles.footerContainer}>
-          <Text>This is my fixed footer</Text>
-        </View>
-      </View>*!/}*/
     );
   }
 }

@@ -1,18 +1,6 @@
 import React, { Component } from "react";
 import { Image } from "react-native";
-import {
-  Container,
-  Header,
-  Content,
-  Card,
-  CardItem,
-  Thumbnail,
-  Text,
-  Button,
-  Icon,
-  Left,
-  Body
-} from "native-base";
+import { Content, Card, CardItem, Text, Left, Body } from "native-base";
 import { Dimensions } from "react-native";
 const win = Dimensions.get("window");
 

@@ -9,19 +9,21 @@ import {
   Content,
   Card,
   CardItem,
-  Text
+  Text,
+  View,
+  Container
 } from "native-base";
-import Page2 from "./Page2";
-import { Image } from "react-native";
+import { ActivityIndicator, Image } from "react-native";
+import { Dimensions } from "react-native";
+const win = Dimensions.get("window");
 
-export default class Page3 extends Component {
+export default class NewsPage extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       isLoading: true,
-      dataSource: "",
-      data: ""
+      dataSource: ""
     };
   }
   getNews() {
@@ -33,8 +35,7 @@ export default class Page3 extends Component {
         this.setState(
           {
             isLoading: false,
-            dataSource: responseJson.articles,
-            data: responseJson.articles
+            dataSource: responseJson.articles
           },
           function() {}
         );
@@ -48,16 +49,16 @@ export default class Page3 extends Component {
     return this.getNews();
   }
 
-  getNewsList() {
-    let i = 0;
-    let items = this.state.data;
+  getNewsDescription() {
+    const items = this.state.dataSource;
     let newItems = [];
-    while (i < this.state.data.length) {
+
+    for (let i = 0; i < items.length; i++) {
+      console.log(items[i].url);
       if (items[i].url === this.props.navigation.state.params.url) {
-        newItems.push(items[i]);
+        newItems = items[i];
         break;
       }
-      i++;
     }
 
     return (
@@ -66,19 +67,19 @@ export default class Page3 extends Component {
           <CardItem>
             <Left>
               <Body>
-                <Text>{this.props.title}</Text>
-                <Text note>{this.props.theme}</Text>
+                <Text>{newItems.title}</Text>
+                <Text note>{newItems.source.name}</Text>
               </Body>
             </Left>
           </CardItem>
           <CardItem>
             <Body>
               <Image
-                source={{ uri: this.props.image }}
-                style={{ height: 200, width: win.width - 75, flex: 1 }}
+                source={{ uri: newItems.urlToImage }}
+                style={{ height: 200, width: win.width - 40, flex: 1 }}
               />
-              <Text>{this.props.text}</Text>
-              <Text>{this.props.text}</Text>
+              <Text>{newItems.description}</Text>
+              <Text>{newItems.description}</Text>
             </Body>
           </CardItem>
         </Card>
@@ -86,19 +87,6 @@ export default class Page3 extends Component {
     );
   }
 
-  static getTheme(item) {
-    //console.log(item.source.name);
-    return (
-      <ListItem>
-        <NewsPreview
-          title={item.title}
-          image={item.urlToImage}
-          text={item.description}
-          theme={item.source.name}
-        />
-      </ListItem>
-    );
-  }
   render() {
     if (this.state.isLoading) {
       return (
@@ -107,11 +95,22 @@ export default class Page3 extends Component {
         </View>
       );
     }
-    //console.log(this.state.dataSource);
     return (
       <Container>
-        <Header navigation={this.props.navigation} />
-        <Content>{this.getNewsList()}</Content>
+        <Header>
+          <Left>
+            <Button
+              transparent
+              onPress={() => this.props.navigation.navigate("HomePage")}
+            >
+              <Icon name="arrow-back" />
+            </Button>
+          </Left>
+          <Body>
+            <Title>Header</Title>
+          </Body>
+        </Header>
+        <Content>{this.getNewsDescription()}</Content>
       </Container>
     );
   }

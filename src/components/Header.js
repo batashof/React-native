@@ -8,7 +8,7 @@ export default class AppHeader extends Component {
         <Left>
           <Button
             transparent
-            onPress={() => this.props.navigation.toggleDrawer()}
+            onPress={() => {this.props.navigation.openDrawer(); console.log("opened")}}
           >
             <Icon name="menu" />
           </Button>
