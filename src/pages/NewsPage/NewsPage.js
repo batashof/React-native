@@ -15,38 +15,21 @@ import {
 } from "native-base";
 import { ActivityIndicator, Image } from "react-native";
 import { Dimensions } from "react-native";
+import NewsAPI from "../../components/NewsAPI";
 const win = Dimensions.get("window");
 
 export default class NewsPage extends Component {
   constructor(props) {
     super(props);
 
+    this.NewsAPI = NewsAPI.bind(this);
     this.state = {
-      isLoading: true,
-      dataSource: ""
+      isLoading: true
     };
-  }
-  getNews() {
-    fetch(
-      "https://newsapi.org/v2/top-headlines?country=us&apiKey=6755260f3f1d41da8ad84091d6deca71"
-    )
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState(
-          {
-            isLoading: false,
-            dataSource: responseJson.articles
-          },
-          function() {}
-        );
-      })
-      .catch(error => {
-        console.error(error);
-      });
   }
 
   componentDidMount() {
-    return this.getNews();
+    return this.NewsAPI();
   }
 
   getNewsDescription() {
@@ -54,36 +37,37 @@ export default class NewsPage extends Component {
     let newItems = [];
 
     for (let i = 0; i < items.length; i++) {
-      console.log(items[i].url);
-      if (items[i].url === this.props.navigation.state.params.url) {
+      if (items[i].uuid === this.props.navigation.state.params.uuid) {
         newItems = items[i];
         break;
       }
     }
 
     return (
-      <Content>
-        <Card style={{ flex: 0 }}>
-          <CardItem>
-            <Left>
-              <Body>
-                <Text>{newItems.title}</Text>
-                <Text note>{newItems.source.name}</Text>
-              </Body>
-            </Left>
-          </CardItem>
-          <CardItem>
+      <Card style={{ flex: 0 }}>
+        <CardItem>
+          <Left>
             <Body>
-              <Image
-                source={{ uri: newItems.urlToImage }}
-                style={{ height: 200, width: win.width - 40, flex: 1 }}
-              />
-              <Text>{newItems.description}</Text>
-              <Text>{newItems.description}</Text>
+              <Text>{newItems.thread.title}</Text>
+              <Text note>{newItems.thread.site}</Text>
             </Body>
-          </CardItem>
-        </Card>
-      </Content>
+          </Left>
+        </CardItem>
+        <CardItem >
+          <Body>
+            <Image
+              source={{ uri: newItems.thread.main_image }}
+              style={{ height: 200, width: win.width - 40, flex: 1 }}
+            />
+            <Text>{newItems.text}</Text>
+          </Body>
+        </CardItem>
+        <CardItem>
+          <Left>
+            <Text>{newItems.thread.published}</Text>
+          </Left>
+        </CardItem>
+      </Card>
     );
   }
 

@@ -4,33 +4,20 @@ import { DrawerActions } from "react-navigation";
 
 import { Content, List, ListItem, Text } from "native-base";
 import { ActivityIndicator, FlatList, View } from "react-native";
+import NewsAPI from "../../components/NewsAPI";
 
 export default class SideMenu extends Component {
   constructor(props) {
     super(props);
 
+    this.NewsAPI = NewsAPI.bind(this);
     this.state = {
       isLoading: true
     };
   }
 
   componentDidMount() {
-    return fetch(
-      "https://newsapi.org/v2/top-headlines?country=us&apiKey=6755260f3f1d41da8ad84091d6deca71"
-    )
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState(
-          {
-            isLoading: false,
-            dataSource: responseJson.articles
-          },
-          function() {}
-        );
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    return this.NewsAPI();
   }
 
   render() {
@@ -49,11 +36,11 @@ export default class SideMenu extends Component {
             onPress={() => {
               this.props.navigation.dispatch(DrawerActions.closeDrawer());
               this.props.navigation.navigate("HomePage", {
-                theme: "Home"
+                theme: "Main"
               });
             }}
           >
-            <Text>Home</Text>
+            <Text>Main</Text>
           </ListItem>
         </List>
         <List
@@ -63,11 +50,11 @@ export default class SideMenu extends Component {
               onPress={() => {
                 this.props.navigation.dispatch(DrawerActions.closeDrawer());
                 this.props.navigation.navigate("HomePage", {
-                  theme: item.source.name
+                  theme: item.thread.site
                 });
               }}
             >
-              <Text>{item.source.name}</Text>
+              <Text>{item.thread.site}</Text>
             </ListItem>
           )}
         />

@@ -1,17 +1,21 @@
 import React, { Component } from "react";
-
+import { ActivityIndicator } from "react-native";
 
 export default function NewsAPI() {
-  let data = [];
   fetch(
-    "https://newsapi.org/v2/top-headlines?country=us&apiKey=6755260f3f1d41da8ad84091d6deca71"
+    "http://webhose.io/filterWebContent?token=af0677b3-a6af-4874-8cc2-94daf120d63a&format=json&ts=1532005749814&sort=crawled&q=language%3Afrench%20site_type%3A%20news%20country%3A%20fr%20site_category%3Apolitics%20ord_in_thread%3A0"
   )
     .then(response => response.json())
     .then(responseJson => {
-      data = responseJson.articles;
+      this.setState(
+        {
+          isLoading: false,
+          dataSource: responseJson.posts
+        },
+        function() {}
+      );
     })
     .catch(error => {
       console.error(error);
     });
-  return data;
 }
